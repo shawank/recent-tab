@@ -1,4 +1,3 @@
-
 var mru = [];
 var slowSwitchOngoing = false;
 var fastSwitchOngoing = false;
@@ -33,15 +32,12 @@ var processCommand = function(command) {
 	slowswitchForward = false;
 	if(command == "alt_switch_fast") {
 		fastswitch = true;
-		quickSwitchActiveUsage();
 	} else if(command == "alt_switch_slow_backward") {
 		fastswitch = false;
 		slowswitchForward = false;
-		slowSwitchActiveUsage();
 	} else if(command == "alt_switch_slow_forward") {
 		fastswitch = false;
 		slowswitchForward = true;
-		slowSwitchActiveUsage();
 	}
 
 	if(!slowSwitchOngoing && !fastSwitchOngoing) {
@@ -89,22 +85,22 @@ var processCommand = function(command) {
 
 chrome.commands.onCommand.addListener(processCommand);
 
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.action.onClicked.addListener(function(tab) {
 	CLUTlog('Click recd');
 	processCommand('alt_switch_fast');
-
 });
+
+// Service workers require this listener to keep the background service worker active
+chrome.runtime.onConnect.addListener(function(port) {});
 
 chrome.runtime.onStartup.addListener(function () {
 	CLUTlog("on startup");
 	initialize();
-
 });
 
 chrome.runtime.onInstalled.addListener(function () {
 	CLUTlog("on startup");
 	initialize();
-
 });
 
 
